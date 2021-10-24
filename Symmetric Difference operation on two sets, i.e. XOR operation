@@ -1,0 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int bins(int* a, int l, int h, int x)
+{
+	while (l <= h)
+	{
+		int mid = (l + h) / 2;
+		if (a[mid] == x)
+			return 1;
+		else if (a[mid] > x)
+			h = mid - 1;
+		else
+			l = mid + 1;
+	}
+
+	return -1;
+}
+
+int binsind(int* a, int l, int h, int x)
+{
+	while (l <= h)
+	{
+		int mid = (l + h) / 2;
+		if (a[mid] == x)
+			return mid;
+		else if (a[mid] > x)
+			h = mid - 1;
+		else
+			l = mid + 1;
+	}
+
+	return -1;
+}
+
+int main()
+{
+	int n, m;
+	printf("Enter the size of set A\n");
+	scanf("%d", &n);
+	int* a = (int*)malloc(n * sizeof(int));
+	printf("Enter the elements of set A seperated by space\n");
+	for (int i = 0; i < n; i++)
+		scanf("%d", &a[i]);
+
+	printf("Enter the size of set B\n");
+	scanf("%d", &m);
+	int* b = (int*)malloc(m * sizeof(int));
+	printf("Enter the elements of set B seperated by space\n");
+	for (int i = 0; i < m; i++)
+		scanf("%d", &b[i]);
+
+	//sorting set a in ascending order
+	for (int i = 1; i < n; i++)
+	{
+		int key = a[i];
+		int j = i - 1;
+		while (j >= 0 && a[j] > key)
+		{
+			a[j + 1] = a[j];
+			j--;
+		}
+		a[j + 1] = key;
+	}
+
+	//sorting set b in ascending order
+	for (int i = 1; i < m; i++)
+	{
+		int key = b[i];
+		int j = i - 1;
+		while (j >= 0 && b[j] > key)
+		{
+			b[j + 1] = b[j];
+			j--;
+		}
+		b[j + 1] = key;
+	}
+
+	//common count of a
+	int c1 = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		int temp1 = bins(b, 0, m - 1, a[i]);
+		if (temp1 == 1)
+		{
+			c1++;
+			temp1 = -1;
+		}
+	}
+
+	//common count of b
+	int c2 = 0;
+
+	for (int i = 0; i < m; i++)
+	{
+		int temp2 = bins(a, 0, n - 1, b[i]);
+		if (temp2 == 1)
+		{
+			c2++;
+			temp2 = -1;
+		}
+	}
+
+	printf("Symmetric Difference (XOR) of set A and set B is : ");
+	//XOR
+	int n1 = n - c1;
+	int m1 = m - c2;
+
+	int* a1 = (int*)malloc(n1 * sizeof(int));
+	int* b1 = (int*)malloc(m1 * sizeof(int));
+
+	for (int i = 0, k = 0; i < n; i++)
+	{
+		int t1 = binsind(b, 0, m - 1, a[i]);
+		if (t1 != -1)
+			continue;
+		else
+		{
+			a1[k] = a[i];
+			k++;
+		}
+	}
+
+	for (int i = 0, k = 0; i < m; i++)
+	{
+		int t2 = binsind(a, 0, n - 1, b[i]);
+		if (t2 != -1)
+			continue;
+		else
+		{
+			b1[k] = b[i];
+			k++;
+		}
+	}
+
+	int chk1 = a1[0];
+	for (int i = 0; i < n1; i++)
+	{
+		if(i > 0)
+		{
+			if (a1[i] == chk1)
+				continue;
+			else
+				chk1 = a1[i];
+		}
+		printf ("%d ", a1[i]);
+	}
+
+	int chk2 = b1[0];
+	for (int i = 0; i < m1; i++)
+	{
+		if(i > 0)
+		{
+			if (b1[i] == chk2)
+				continue;
+			else
+				chk2 = b1[i];
+		}
+		printf ("%d ", b1[i]);
+	}
+
+	return 0;
+}
