@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+	int sa, sb;
+
+	printf("Enter the size of set A\n");
+	scanf("%d", &sa);
+	int* a = (int*)malloc(sa * sizeof(int));
+	printf("Enter the elements of set A seperated by space\n");
+	for (int i = 0; i < sa; i++)
+		scanf("%d", &a[i]);
+
+	printf("Enter the size of set B\n");
+	scanf("%d", &sb);
+	int* b = (int*)malloc(sb * sizeof(int));
+	printf("Enter the elements of set B seperated by space\n");
+	for (int i = 0; i < sb; i++)
+		scanf("%d", &b[i]);
+
+	//sorting set A in ascending order
+	for (int i = 1; i < sa; i++)
+	{
+		int key = a[i];
+		int j = i - 1;
+		while (j >= 0 && a[j] > key)
+		{
+			a[j + 1] = a[j];
+			j--;
+		}
+		a[j + 1] = key;
+	}
+
+	printf("Intersection of set A & set B is : ");
+	//intersection operation
+	int flg = 0;
+	int t1 = a[0];
+	for (int i = 0; i < sa; i++)
+	{
+		if (i > 0)
+		{
+			if (a[i] == t1)
+				continue;
+			else
+				t1 = a[i];
+		}
+		for (int j = 0; j < sb; j++)
+		{
+			if (b[j] == a[i])
+			{
+				flg = 1;
+				break;
+			}
+		}
+
+		if (flg == 1)
+			printf("%d ", a[i]);
+
+		flg = 0;
+	}
+
+	return 0;
+}
