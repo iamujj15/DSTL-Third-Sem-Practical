@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	int n, m;
+	printf("Enter the size of set A\n");
+	scanf("%d", &n);
+	int* a = (int*)malloc(n * sizeof(int));
+	printf("Enter the elements of set A seperated by space\n");
+	for (int i = 0; i < n; i++)
+		scanf("%d", &a[i]);
+
+	printf("Enter the size of set B\n");
+	scanf("%d", &m);
+	int* b = (int*)malloc(m * sizeof(int));
+	printf("Enter the elements of set B seperated by space\n");
+	for (int i = 0; i < m; i++)
+		scanf("%d", &b[i]);
+
+	//sorting set a in ascending order
+	for (int i = 1; i < n; i++)
+	{
+		int key = a[i];
+		int j = i - 1;
+		while (j >= 0 && a[j] > key)
+		{
+			a[j + 1] = a[j];
+			j--;
+		}
+		a[j + 1] = key;
+	}
+
+	//sorting set b in ascending order
+	for (int i = 1; i < m; i++)
+	{
+		int key = b[i];
+		int j = i - 1;
+		while (j >= 0 && b[j] > key)
+		{
+			b[j + 1] = b[j];
+			j--;
+		}
+		b[j + 1] = key;
+	}
+
+	//taking only distinct elements in set a
+	int t1 = a[0];
+	int k1 = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (i > 0)
+		{
+			if (a[i] == t1)
+				continue;
+			else
+			{
+				t1 = a[i];
+				k1++;
+			}
+		}
+		a[k1] = a[i];
+	}
+
+	//taking only distinct elements in set b
+	int t2 = b[0];
+	int k2 = 0;
+	for (int i = 0; i < m; i++)
+	{
+		if (i > 0)
+		{
+			if (b[i] == t2)
+				continue;
+			else
+			{
+				t2 = b[i];
+				k2++;
+			}
+		}
+		b[k2] = b[i];
+	}
+
+	printf("Difference of set A and set B is : ");
+	//difference operation
+	int flg = 0;
+	for (int i = 0; i <= k1; i++)
+	{
+		for (int j = 0; j <= k2; j++)
+		{
+			if (a[i] == b[j])
+			{
+				flg = 1;
+				break;
+			}
+		}
+
+		if (flg == 1)
+		{
+			flg = 0;
+			continue;
+		}
+		else
+			printf("%d ", a[i]);
+	}
+
+	printf("\n");
+
+	return 0;
+}
