@@ -1,0 +1,50 @@
+#include<stdio.h>
+
+int main()
+{
+	printf("Enter A to print the truth table for AND operation\n");
+	printf("Enter O to print the truth table for OR operation\n");
+	printf("Enter N to print the truth table for NOT operation\n");
+
+	char st;
+	scanf("%c", &st);
+
+	switch (st)
+	{
+	case 'A' :
+	{
+		int i, j;
+		for (i = 0; i < 2; i++)
+		{
+			for (j = 0; j < 2; j++)
+			{
+				printf("%d AND %d = %d\n", i, j, (i & j));
+			}
+		}
+		break;
+	}
+	case 'O' :
+	{
+		int i, j;
+		for (i = 0; i < 2; i++)
+		{
+			for (j = 0; j < 2; j++)
+			{
+				printf("%d OR %d = %d\n", i, j, (i || j));
+			}
+		}
+		break;
+	}
+	case 'N' :
+	{
+		int i;
+		for (i = 0; i < 2; i++)
+			printf("Not %d = %d\n", i, (!i));
+		break;
+	}
+	default :
+		printf("Wrong Input! Please try again.\n");
+	}
+
+	return 0;
+}
