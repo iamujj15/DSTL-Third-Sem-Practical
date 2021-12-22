@@ -1,0 +1,154 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+bool ref(int* a, int** b, int n, int m)
+{
+    int flg = 0;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (b[j][0] == b[j][1])
+            {
+                if (b[j][0] == a[i])
+                {
+                    flg = 1;
+                    break;
+                }
+            }
+        }
+        if (i == (n - 1))
+            break;
+        else if (flg == 1)
+            flg = 0;
+        else
+        {
+            flg = 0;
+            break;
+        }
+    }
+    if (flg == 1)
+        return true;
+    else
+        return false;
+}
+
+bool sym(int** b, int m)
+{
+    int flg = 0, p = 1;
+    for (int i = 0; i < m; i++)
+    {
+        if (b[i][0] != b[i][1])
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (b[i][0] == b[j][1] && b[i][1] == b[j][0])
+                {
+                    flg = 1;
+                    break;
+                }
+            }
+            if (i == m - 1)
+                break;
+            else if (flg == 1)
+                flg = 0;
+            else
+            {
+                flg = 0;
+                break;
+            }
+            p = 0;
+        }
+    }
+    if (flg == 1 || p == 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool trn(int** b, int m)
+{
+    int flg = 0, fchk = 1;
+    for (int i = 0; i < m; i++)
+    {
+        if (b[i][0] != b[i][1])
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (b[j][0] == b[i][1])
+                {
+                    for (int k = 0; k < m; k++)
+                    {
+                        if (b[k][0] == b[i][0] && b[k][1] == b[j][1])
+                        {
+                            flg = 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                    continue;
+                if (flg == 1)
+                {
+                    fchk = 1;
+                    flg = 0;
+                }
+                else
+                {
+                    fchk = 0;
+                    goto rn;
+                }
+            }
+        }
+    }
+rn:;
+    if (fchk == 1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int main()
+{
+    int n, m;
+    printf("Enter the number of elements of set, say 'A'.\n");
+    scanf("%d", &n);
+    int* a = (int*)malloc(n * sizeof(int));
+    if (n)
+    {
+        printf("Enter the elements of the set A.\n");
+        for (int i = 0; i < n; i++)
+            scanf("%d", &a[i]);
+    }
+    printf("Enter the number of elements of the relation on set A.\n");
+    scanf("%d", &m);
+    int** b = (int**)malloc(m * sizeof(int*));
+    for (int i = 0; i < m; i++)
+        b[i] = (int*)malloc(2 * sizeof(int));
+    if (m)
+    {
+        printf("Enter the elements of the relation\nRelation set is a m*2 matrix, so provide the input accordingly.\n");
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < 2; j++)
+                scanf("%d", &b[i][j]);
+    }
+    bool re = ref(a, b, n, m);
+    bool sy = sym(b, m);
+    bool tr = trn(b, m);
+
+    if (re && sy && tr)
+        printf("Equivalence\n");
+    else
+        printf("Not Equivalence\n");
+
+    return 0;
+}
